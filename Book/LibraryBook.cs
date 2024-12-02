@@ -16,9 +16,9 @@ namespace LibraryManagementApplication.Book
 
         public int PublishedYear { get; set; }
 
-        public int Id { get; set; }
-
         public int ISBN { get; set; }
+
+        public int Id { get; set; }
 
 
         public LibraryBook(string titel, string arthur, string genre, int publishedYear, int id, int isbn)
@@ -27,8 +27,8 @@ namespace LibraryManagementApplication.Book
             Arthur = arthur;
             Genre = genre;
             PublishedYear = publishedYear;
-            Id = id;
             ISBN = isbn;
+            Id = id;
         }
     }
 }

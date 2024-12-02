@@ -1,11 +1,6 @@
 ﻿using LibraryManagementApplication.Book;
 using LibraryManagementApplication.Database;
 using Spectre.Console;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LibraryManagementApplication.Library
 {
@@ -13,45 +8,45 @@ namespace LibraryManagementApplication.Library
     {
         public static void AddNewBook(List<LibraryBook> allBooks, List<Arthur> allArthurs, string dataJSONfilPath)
         {
-            int newBookId = allBooks.Count == 0 ? 1 : allBooks.Max(b => b.Id) + 1;
-
             string title = InputHelper.GetNonEmptyString("Enter the title of the book:");
 
             string authorName = InputHelper.GetNonEmptyString("Enter the name of the author:");
 
             string genre = InputHelper.GetNonEmptyString("Enter the genre of the book:");
 
-            int isbn = InputHelper.GetPositiveInt("Enter the ISBN of the book:");
-
             int year = InputHelper.GetPositiveInt("Enter the year the book was published:");
 
-            LibraryBook newBook = new LibraryBook(title, authorName, genre, isbn, year, newBookId);
-            
-            allBooks.Add(newBook);
+            int isbn = InputHelper.GetPositiveInt("Enter the ISBN of the book:");
 
+            int newBookId = allBooks.Count == 0 ? 1 : allBooks.Max(b => b.Id) + 1;
+
+            LibraryBook newBook = new LibraryBook(title, authorName, genre, year, isbn, newBookId);
+
+            allBooks.Add(newBook);
             DatabaseHelper.SaveDataToJson(allBooks, allArthurs, dataJSONfilPath);
 
-            Console.WriteLine($"Book '{title}' by {authorName} {year}, has now been added to your book library.");
+            Console.WriteLine($"Book '{title}' by {authorName} ({year}), has now been added to your book library.");
             AnsiConsole.Markup($"[green]ID: {newBookId}[/]\n");
-            AnsiConsole.Markup("[yellow]Press any key to return to the main menu...[/]"); 
+            AnsiConsole.Markup("[yellow]Press any key to return to the main menu...[/]");
             Console.ReadKey();
         }
 
 
         public static void AddNewArthur(List<Arthur> allArthurs, List<LibraryBook> allBooks, string dataJSONfilPath)
         {
-            int newarthurId = allBooks.Count == 0 ? 1 : allBooks.Max(b => b.Id) + 1;
-
             string authorName = InputHelper.GetNonEmptyString("Enter the name of the author you want to add:");
+
+            int newarthurId = allBooks.Count == 0 ? 1 : allBooks.Max(b => b.Id) + 1;
 
             string country = InputHelper.GetNonEmptyString("Name the country the arthur is from:");
 
-            Arthur newArthur = new Arthur(authorName,newarthurId,country);
+
+            Arthur newArthur = new Arthur(authorName, newarthurId, country);
             allArthurs.Add(newArthur);
 
             DatabaseHelper.SaveDataToJson(allBooks, allArthurs, dataJSONfilPath);
 
-            Console.WriteLine($"{authorName} from {country} has now been added to you're Arthur library");
+            Console.WriteLine($"{authorName} ({country}) has now been added to you're Arthur library");
             AnsiConsole.Markup($"[green]ID: {newarthurId}[/]\n");
             AnsiConsole.Markup("[yellow]Press any key to return to the main menu...[/]");
             Console.ReadKey();
@@ -194,11 +189,13 @@ namespace LibraryManagementApplication.Library
                 return;
             }
 
-            bool confirmation = AnsiConsole.Prompt(
-                new ConfirmationPrompt($"Are you sure you want to remove '{authorToRemove.Name}'?")
+            var confirmation = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title($"Are you sure you want to remove '{authorToRemove.Name}'?")
+                    .AddChoices("Yes", "No")
             );
 
-            if (confirmation)
+            if (confirmation == "Yes")
             {
                 allArthurs.Remove(authorToRemove);
                 DatabaseHelper.SaveDataToJson(allBooks, allArthurs, dataJSONfilPath);
@@ -210,8 +207,8 @@ namespace LibraryManagementApplication.Library
             {
                 AnsiConsole.Markup($"[red]Operation canceled.[/]");
             }
-
         }
+
         public static void RemoveBook(List<LibraryBook> allBooks, List<Arthur> allArthurs, string dataJSONfilPath)
         {
             if (allBooks.Count == 0)
@@ -236,23 +233,26 @@ namespace LibraryManagementApplication.Library
                 return;
             }
 
-            bool confirmation = AnsiConsole.Prompt(
-                new ConfirmationPrompt($"Are you sure you want to remove '{bookToRemove.Titel}'?")
+            var confirmation = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title($"Are you sure you want to remove '{bookToRemove.Titel}'?")
+                    .AddChoices("Yes", "No")
             );
 
-            if (confirmation)
+            if (confirmation == "Yes")
             {
                 allBooks.Remove(bookToRemove);
                 DatabaseHelper.SaveDataToJson(allBooks, allArthurs, dataJSONfilPath);
-                AnsiConsole.Markup($"Book '{bookToRemove.Titel}' has been removed.[/]\n");
+                AnsiConsole.Markup($"[red]Book '{bookToRemove.Titel}' has been removed.[/]\n");
                 AnsiConsole.Markup("[yellow]Press any key to return to the main menu...[/]");
                 Console.ReadKey();
             }
             else
             {
-                AnsiConsole.Markup($"[red]Operation canceled.[/]"); 
+                AnsiConsole.Markup($"[red]Operation canceled.[/]");
             }
         }
+
         public static void ShowAllAuthors(List<Arthur> allArthurs)
         {
             if (allArthurs.Count == 0)
@@ -318,8 +318,9 @@ namespace LibraryManagementApplication.Library
                 Console.WriteLine($"You selected: {selectedBook.Titel}");
                 Console.WriteLine($"Author: {selectedBook.Arthur}");
                 Console.WriteLine($"Genre: {selectedBook.Genre}");
-                Console.WriteLine($"ISBN: {selectedBook.ISBN}");
                 Console.WriteLine($"Published Year: {selectedBook.PublishedYear}");
+                Console.WriteLine($"ISBN: {selectedBook.ISBN}");
+                Console.WriteLine($"ID: {selectedBook.Id}");
             }
             else
             {
@@ -329,6 +330,6 @@ namespace LibraryManagementApplication.Library
             AnsiConsole.Markup("[yellow]Press any key to return to the main menu...[/]");
             Console.ReadKey();
         }
-        
+
     }
 }

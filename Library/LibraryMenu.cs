@@ -18,7 +18,16 @@ namespace LibraryManagementApplication.Library
             while (running)
             {
                 Console.Clear();
-                AnsiConsole.Markup("[bold cyan]Welcome to the library![/]\n");
+
+                AnsiConsole.Markup(
+                "[bold cyan]WELCOME TO THE LIBRARY![/]\n" +
+                "[italic bold yellow]\"The only thing you absolutely have to know is the location of the library.\"[/] - [bold yellow]Albert Einstein[/]\n"
+            );
+
+                AnsiConsole.Write(new FigletText("Open a book, open your world.")
+                    .Centered()
+                    .Color(Color.Magenta3));
+
 
                 var table = new Table();
                 table.AddColumn("[yellow]Option[/]");

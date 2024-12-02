@@ -11,7 +11,6 @@ namespace LibraryManagementApplication.Book
         public string Name { get; set; }
 
         public int Id { get; set; }
-
         public string Country { get; set; }
 
         public Arthur(string name, int id, string country)
@@ -19,6 +18,7 @@ namespace LibraryManagementApplication.Book
             Name = name;
             Id = id;
             Country = country;
+
         }
     }
 }
