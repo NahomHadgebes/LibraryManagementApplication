@@ -36,12 +36,11 @@ namespace LibraryManagementApplication.Library
         {
             string authorName = InputHelper.GetNonEmptyString("Enter the name of the author you want to add:");
 
-            int newarthurId = allBooks.Count == 0 ? 1 : allBooks.Max(b => b.Id) + 1;
-
             string country = InputHelper.GetNonEmptyString("Name the country the arthur is from:");
 
+            int newarthurId = allBooks.Count == 0 ? 1 : allBooks.Max(b => b.Id) + 1;
 
-            Arthur newArthur = new Arthur(authorName, newarthurId, country);
+            Arthur newArthur = new Arthur(authorName, country, newarthurId);
             allArthurs.Add(newArthur);
 
             DatabaseHelper.SaveDataToJson(allBooks, allArthurs, dataJSONfilPath);

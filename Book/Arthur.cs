@@ -13,7 +13,7 @@ namespace LibraryManagementApplication.Book
         public int Id { get; set; }
         public string Country { get; set; }
 
-        public Arthur(string name, int id, string country)
+        public Arthur(string name, string country, int id)
         {
             Name = name;
             Id = id;

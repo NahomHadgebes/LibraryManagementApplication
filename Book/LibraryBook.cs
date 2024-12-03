@@ -21,7 +21,7 @@ namespace LibraryManagementApplication.Book
         public int Id { get; set; }
 
 
-        public LibraryBook(string titel, string arthur, string genre, int publishedYear, int id, int isbn)
+        public LibraryBook(string titel, string arthur, string genre, int publishedYear, int isbn, int id)
         {
             Titel = titel;
             Arthur = arthur;
